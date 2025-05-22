@@ -14,14 +14,14 @@ const PopularMenu = () => {
   }, []);
 
   return (
-    <div>
-      <div className="py-4">
+    <div className="py-8">
+      <div className="">
         <SectionTitle
           heading={"FROM OUR MENU"}
           subHeading={"---Check it out---"}
         ></SectionTitle>
       </div>
-      <div>
+      <div className="grid md:grid-cols-2 gap-8 px-4">
         {
             menu.map(item => <MenuCard
             key={item._id}
