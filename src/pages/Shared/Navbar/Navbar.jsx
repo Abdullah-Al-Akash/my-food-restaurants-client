@@ -1,20 +1,35 @@
-import './Navbar.css';
+import { Link, useLocation } from "react-router-dom";
+import "./Navbar.css";
 
 const Navbar = () => {
+  const location = useLocation();
   const navOptions = (
     <>
       <li>
-        <a className='hover:text-yellow-400 active:!bg-transparent focus:!bg-transparent hover:!bg-transparent'>Item 1</a>
+        <Link
+          to="/"
+          className={`text-white hover:text-yellow-400 ${
+            location.pathname === "/" ? "text-yellow-400" : ""
+          } focus:!bg-transparent hover:!bg-transparent`}
+        >
+          Home
+        </Link>
       </li>
-      
       <li>
-        <a className='hover:text-yellow-400 active:!bg-transparent focus:!bg-transparent hover:!bg-transparent'>Item 3</a>
+        <Link
+          to="/menu"
+          className={`text-white hover:text-yellow-400 active:text-yellow-400 ${
+            location.pathname === "/menu" ? "text-yellow-400" : ""
+          } focus:!bg-transparent hover:!bg-transparent`}
+        >
+          Menu
+        </Link>
       </li>
     </>
   );
   return (
     <>
-      <div className="navbar fixed z-10 bg-opacity-30 bg-black text-white max-w-screen-xl font-bold">
+      <div className="navbar fixed z-10 bg-opacity-30 bg-black max-w-screen-xl font-bold">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -35,12 +50,14 @@ const Navbar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 rounded-box w-52"
             >
               {navOptions}
             </ul>
           </div>
-          <a className="btn btn-ghost normal-case text-xl">Bistro Boss</a>
+          <Link to="/" className="btn btn-ghost normal-case text-2xl">
+            Bistro Boss
+          </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">{navOptions}</ul>
