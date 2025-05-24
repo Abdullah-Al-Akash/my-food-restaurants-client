@@ -2,10 +2,22 @@ import Cover from "../../Shared/Cover/Cover";
 import orderBg from "../../../assets/shop/order-bg.jpg";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
 import { useState } from "react";
+import useMenu from "../../../hooks/useMenu";
+import FoodCard from "../../../components/FoodCard/FoodCard";
+import { useParams } from "react-router-dom";
 
 const OrderFood = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-  const tabs = ["SALAD", "PIZZA", "SOUPS", "DESSERTS", "DRINKS"];
+  const [menu] = useMenu();
+  const tabs = ["salads", "pizzas", "soups", "desserts", "drinks"];
+  const{category} = useParams();
+  const initialIndex = tabs.indexOf(category)
+  console.log(category);
+  const drinksItems = menu?.filter((item) => item?.category === "drinks");
+  const dessertItems = menu?.filter(item => item?.category === "dessert");
+  const pizzatItems = menu?.filter(item => item?.category === "pizza");
+  const saladItems = menu?.filter(item => item?.category === "salad");
+  const soupItems = menu?.filter(item => item?.category === "soup");
+  const [tabIndex, setTabIndex] = useState(initialIndex);
 
   return (
     <div>
@@ -20,7 +32,7 @@ const OrderFood = () => {
           {tabs.map((tab, index) => (
             <Tab
               key={tab}
-              className={`font-semibold text-base sm:text-lg cursor-pointer px-3 py-2 outline-none border-b-2 transition-all duration-200
+              className={`font-semibold text-base sm:text-lg cursor-pointer px-3 py-2 outline-none border-b-2 transition-all duration-200 uppercase
                 ${
                   tabIndex === index
                     ? "text-yellow-400 border-yellow-500"
@@ -33,19 +45,49 @@ const OrderFood = () => {
         </TabList>
 
         <TabPanel>
-          <p className="text-white text-center">Salad Content</p>
+          <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
+            {
+              saladItems?.map(salad => <FoodCard
+              item = {salad}
+              ></FoodCard>)
+            }
+          </div>
         </TabPanel>
         <TabPanel>
-          <p className="text-white text-center">Pizza Content</p>
+          <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
+            {
+              pizzatItems?.map(salad => <FoodCard
+              item = {salad}
+              ></FoodCard>)
+            }
+          </div>
         </TabPanel>
         <TabPanel>
-          <p className="text-white text-center">Soup Content</p>
+          <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
+            {
+              soupItems?.map(salad => <FoodCard
+              item = {salad}
+              ></FoodCard>)
+            }
+          </div>
         </TabPanel>
         <TabPanel>
-          <p className="text-white text-center">Dessert Content</p>
+          <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
+            {
+              dessertItems?.map(salad => <FoodCard
+              item = {salad}
+              ></FoodCard>)
+            }
+          </div>
         </TabPanel>
         <TabPanel>
-          <p className="text-white text-center">Drinks Content</p>
+          <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
+            {
+              drinksItems?.map(salad => <FoodCard
+              item = {salad}
+              ></FoodCard>)
+            }
+          </div>
         </TabPanel>
       </Tabs>
     </div>

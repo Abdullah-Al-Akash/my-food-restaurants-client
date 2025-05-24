@@ -27,9 +27,9 @@ const Navbar = () => {
       </li>
       <li>
         <Link
-          to="/order"
+          to="/order/salads"
           className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
-            location.pathname === "/order" ? "text-yellow-400" : ""
+            location.pathname === "/order/salads" ? "text-yellow-400" : ""
           } focus:!bg-transparent hover:!bg-transparent`}
         >
           Order Food
