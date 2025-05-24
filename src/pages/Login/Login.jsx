@@ -1,7 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { AuthContext } from '../../Providers/AuthProvider';
+import img from '../../assets/others/authentication2.png';
+import bgCover from '../../assets/others/authentication.png';
 
 const Login = () => {
+  const{loginUser} = useContext(AuthContext)
     const[captchaErr, setCaptchaErr] = useState('');
     useEffect(()=> {
         loadCaptchaEnginge(4);
@@ -14,26 +18,28 @@ const Login = () => {
         const captcha = form.captcha.value;
         const isValid = validateCaptcha(captcha);
         if(isValid){
-            setCaptchaErr('')
+          setCaptchaErr('');
+          loginUser(email, password)
+          .then(result => {
+            const user = result.user;
+            console.log(user);
+          })
+
         }
         else{
            setCaptchaErr('Captcha does not match') 
         }
     }
   return (
-    <div className="hero min-h-screen bg-base-200">
-      <div className="hero-content flex-col lg:flex-row-reverse">
-        <div className="text-center md:w-1/2 lg:text-left">
-          <h1 className="text-5xl font-bold">Login now!</h1>
-          <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
-          </p>
+    <div className="md:hero-content min-h-screen" style={{ backgroundImage: `url(${bgCover})` }}>
+      <div className={`hero-content shadow-2xl`}
+      style={{ backgroundImage: `url(${bgCover})` }}>
+        <div className="md:w-1/2 md:block hidden">
+          <img src={img} alt="" />
         </div>
-        <div className="card md:w-1/2 w-full max-w-sm shadow-2xl bg-base-100">
+        <div className="md:w-1/2 w-full">
+        <h3 className='text-center text-4xl font-bold mt-2'>Login</h3>
           <form onSubmit={handleLogin} className="card-body">
-            
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -80,7 +86,7 @@ const Login = () => {
               <input className="btn btn-lg bg-orange-200 btn-primary hover:bg-orange-300 border-0 text-black" type="submit" value="Login" />
             </div>
           </form>
-        </div>
+        </div> 
       </div>
     </div>
   );
