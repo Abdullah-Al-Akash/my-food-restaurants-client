@@ -8,7 +8,7 @@ const Navbar = () => {
       <li>
         <Link
           to="/"
-          className={`text-white hover:text-yellow-400 ${
+          className={`text-xl text-white hover:text-yellow-400 ${
             location.pathname === "/" ? "text-yellow-400" : ""
           } focus:!bg-transparent hover:!bg-transparent`}
         >
@@ -18,11 +18,21 @@ const Navbar = () => {
       <li>
         <Link
           to="/menu"
-          className={`text-white hover:text-yellow-400 active:text-yellow-400 ${
+          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
             location.pathname === "/menu" ? "text-yellow-400" : ""
           } focus:!bg-transparent hover:!bg-transparent`}
         >
           Menu
+        </Link>
+      </li>
+      <li>
+        <Link
+          to="/order"
+          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
+            location.pathname === "/order" ? "text-yellow-400" : ""
+          } focus:!bg-transparent hover:!bg-transparent`}
+        >
+          Order Food
         </Link>
       </li>
     </>

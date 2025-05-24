@@ -1,0 +1,6 @@
+/* Remove default tab styles from react-tabs */
+.react-tabs__tab--selected {
+  border: none !important;
+  border-bottom: none !important;
+  outline: none !important;
+}
