@@ -3,10 +3,12 @@ import "./Navbar.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { FaCartPlus } from "react-icons/fa6";
+import useCarts from "../../../hooks/useCarts";
 
 const Navbar = () => {
   const location = useLocation();
   const { user, logOut, loading } = useContext(AuthContext);
+  const [cart] = useCarts();
   const handleLogout = () => {
     logOut();
   };
@@ -43,12 +45,15 @@ const Navbar = () => {
         </Link>
       </li>
       <li>
-        <Link to="/" className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
+        <Link
+          to="/"
+          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
             location.pathname === "/" ? "text-yellow-400" : ""
-          } focus:!bg-transparent hover:!bg-transparent mt-1`}>
+          } focus:!bg-transparent hover:!bg-transparent mt-1`}
+        >
           <button className="flex justify-center items-center">
             <FaCartPlus />
-            <div className="badge badge-warning ms-2">+0</div>
+            <div className="badge badge-warning ms-2">{cart.length}</div>
           </button>
         </Link>
       </li>
