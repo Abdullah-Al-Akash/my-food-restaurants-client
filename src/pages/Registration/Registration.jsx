@@ -9,14 +9,14 @@ import Swal from "sweetalert2";
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { createUser } = useContext(AuthContext);
+  const { createUser, updateUser } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const from = location?.state?.from?.pathname || "/";
 
   const {
     register,
-    handleSubmit,
+    handleSubmit, reset,
     formState: { errors },
   } = useForm();
 
@@ -25,6 +25,11 @@ const Registration = () => {
     createUser(data.email, data.password)
       .then((result) => {
         const user = result?.user;
+        updateUser(data.name, '')
+        .then(()=> {
+          console.log("Updated Profile with name");
+          reset();
+        })
         console.log("User", user);
         user &&
           Swal.fire({

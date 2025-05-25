@@ -1,5 +1,12 @@
 import { createContext, useEffect, useState } from "react";
-import { createUserWithEmailAndPassword, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+} from "firebase/auth";
 import { app } from "../firebase/firebase.config";
 import Swal from "sweetalert2";
 
@@ -12,17 +19,26 @@ const AuthProvider = ({ children }) => {
 
   const createUser = (email, password) => {
     setLoading(true);
-    return createUserWithEmailAndPassword(auth, email, password)
-  }
+    return createUserWithEmailAndPassword(auth, email, password);
+  };
 
   const loginUser = async (email, password) => {
     setLoading(true);
-    return signInWithEmailAndPassword(auth, email, password)
-  }
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  // Update User Profile:
+  const updateUser = (name, photo) => {
+    return updateProfile(auth.currentUser, {
+      displayName: name,
+      photoURL: photo,
+    });
+  };
 
   const logOut = () => {
     setLoading(true);
-    signOut(auth).then(() => {
+    signOut(auth)
+      .then(() => {
         Swal.fire({
           position: "center",
           icon: "success",
@@ -35,18 +51,20 @@ const AuthProvider = ({ children }) => {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, currentUser => {
-        setUser(currentUser);
-        console.log("Current User", currentUser);
-        setLoading(false)
-    })
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      console.log("Current User", currentUser);
+      setLoading(false);
+    });
 
-    return ()=> {return unsubscribe};
-  },)
+    return () => {
+      return unsubscribe;
+    };
+  });
 
-  const authInfo = { user, loading, setLoading, createUser, loginUser, logOut };
+  const authInfo = { user, loading, setLoading, createUser, loginUser, logOut, updateUser };
 
   return (
     <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>

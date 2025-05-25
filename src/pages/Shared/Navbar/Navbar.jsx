@@ -2,13 +2,13 @@ import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
-import Swal from "sweetalert2";
+import { FaCartPlus } from "react-icons/fa6";
 
 const Navbar = () => {
   const location = useLocation();
   const { user, logOut, loading } = useContext(AuthContext);
   const handleLogout = () => {
-    logOut()
+    logOut();
   };
   const navOptions = (
     <>
@@ -40,6 +40,16 @@ const Navbar = () => {
           } focus:!bg-transparent hover:!bg-transparent`}
         >
           Order Food
+        </Link>
+      </li>
+      <li>
+        <Link to="/" className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
+            location.pathname === "/" ? "text-yellow-400" : ""
+          } focus:!bg-transparent hover:!bg-transparent mt-1`}>
+          <button className="flex justify-center items-center">
+            <FaCartPlus />
+            <div className="badge badge-warning ms-2">+0</div>
+          </button>
         </Link>
       </li>
     </>

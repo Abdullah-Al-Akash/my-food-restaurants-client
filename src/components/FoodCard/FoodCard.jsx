@@ -1,7 +1,10 @@
 const FoodCard = ({ item }) => {
   const { name, recipe, image, price } = item;
+  const handleAdToCart = food => {
+    console.log(food);
+  }
   return (
-    <div className="bg-[#f3f3f3] shadow-xl text-center relative">  {/* <-- এখানে relative যোগ করলাম */}
+    <div className="bg-[#f3f3f3] shadow-xl text-center relative">
       <figure>
         <img className="w-full rounded-sm" src={image} alt={name} />
       </figure>
@@ -14,8 +17,8 @@ const FoodCard = ({ item }) => {
         <h2 className="text-xl font-bold text-center">{name}</h2>
         <p className="text-gray-400">{recipe.slice(0, 70)}</p>
         <div className="card-actions justify-center items-center mt-4">
-          <button className="btn btn-outline text-yellow-600 bg-gray-200 border-yellow-600 border-b-2 border-0 text-xl hover:border-b-yellow-600 hover:text-yellow-600">
-            Order Now
+          <button onClick={() => handleAdToCart(item)} className="btn btn-outline text-yellow-600 bg-gray-200 border-yellow-600 border-b-2 border-0 text-xl hover:border-b-yellow-600 hover:text-yellow-600 normal-case">
+            Add to Cart
           </button>
         </div>
       </div>
