@@ -5,31 +5,19 @@ import Swal from "sweetalert2";
 
 export const AuthContext = createContext(null);
 const auth = getAuth(app);
+
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const createUser = (email, password) => {
     setLoading(true);
-    createUserWithEmailAndPassword(auth, email, password)
+    return createUserWithEmailAndPassword(auth, email, password)
   }
 
   const loginUser = async (email, password) => {
     setLoading(true);
-    signInWithEmailAndPassword(auth, email, password).then((result) => {
-        const user = result?.user;
-        console.log("User",user);
-        user && Swal.fire({
-          position: "center",
-          icon: "success",
-          title: "Successfully Login",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      })
+    return signInWithEmailAndPassword(auth, email, password)
   }
 
   const logOut = () => {

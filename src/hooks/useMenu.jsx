@@ -12,7 +12,7 @@ const [loader, setLoader] = useState(true);
       });
   }, []);
 
-  return [menu];
+  return [menu, loader];
 }
 
 export default useMenu;

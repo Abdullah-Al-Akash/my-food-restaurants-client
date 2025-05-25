@@ -1,14 +1,19 @@
 import img from "../../assets/others/authentication2.png";
 import bgCover from "../../assets/others/authentication.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Swal from "sweetalert2";
 
 const Registration = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { createUser } = useContext(AuthContext);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state?.from?.pathname || "/";
+
   const {
     register,
     handleSubmit,
@@ -18,10 +23,22 @@ const Registration = () => {
   const onSubmit = (data) => {
     console.log(data);
     createUser(data.email, data.password)
-    .then(result => {
-      const loggedUser = result.user;
-      console.log(loggedUser);
-    })
+      .then((result) => {
+        const user = result?.user;
+        console.log("User", user);
+        user &&
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Registration Done",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        user && navigate(from, { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

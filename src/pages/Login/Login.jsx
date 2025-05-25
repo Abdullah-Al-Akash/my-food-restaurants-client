@@ -7,11 +7,16 @@ import {
 import { AuthContext } from "../../Providers/AuthProvider";
 import img from "../../assets/others/authentication2.png";
 import bgCover from "../../assets/others/authentication.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const { loginUser } = useContext(AuthContext);
   const [captchaErr, setCaptchaErr] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location?.state?.from?.pathname || "/";
+  
   useEffect(() => {
     loadCaptchaEnginge(4);
   }, []);
@@ -25,6 +30,22 @@ const Login = () => {
     if (isValid) {
       setCaptchaErr("");
       loginUser(email, password)
+        .then((result) => {
+          const user = result?.user;
+          console.log("User", user);
+          user &&
+            Swal.fire({
+              position: "center",
+              icon: "success",
+              title: "Successfully Login",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+            user && navigate(from, {replace: true});
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       setCaptchaErr("Captcha does not match");
     }
