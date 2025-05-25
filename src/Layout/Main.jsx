@@ -5,11 +5,12 @@ import Navbar from "../pages/Shared/Navbar/Navbar";
 const Main = () => {
   const location = useLocation();
   const isLogin = location.pathname.includes("login");
+  const isReg = location.pathname.includes("registration")
   return (
     <div>
-      {isLogin || <Navbar></Navbar>}
+      {isLogin || isReg || <Navbar></Navbar>}
       <Outlet></Outlet>
-      {isLogin || <Footer></Footer>}
+      {isLogin || isReg || <Footer></Footer>}
     </div>
   );
 };

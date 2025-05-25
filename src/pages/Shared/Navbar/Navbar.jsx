@@ -1,8 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
+import { useContext } from "react";
+import { AuthContext } from "../../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const location = useLocation();
+  const { user, logOut, loading } = useContext(AuthContext);
+  const handleLogout = () => {
+    logOut()
+  };
   const navOptions = (
     <>
       <li>
@@ -73,7 +80,23 @@ const Navbar = () => {
           <ul className="menu menu-horizontal px-1">{navOptions}</ul>
         </div>
         <div className="navbar-end">
-          <Link to="login" className="btn btn-neutral border-yellow-600 border-b-4 border-0 text-xl">Login</Link>
+          {loading ? (
+            <span className="loading loading-spinner text-warning me-8"></span>
+          ) : user ? (
+            <button
+              onClick={handleLogout}
+              className="btn normal-case btn-neutral border-yellow-600 border-b-4 border-0 text-xl"
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="login"
+              className="btn btn-neutral normal-case border-yellow-600 border-b-4 border-0 text-xl"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </>

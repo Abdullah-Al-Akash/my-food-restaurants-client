@@ -1,48 +1,52 @@
-import { useContext, useEffect, useState } from 'react';
-import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
-import { AuthContext } from '../../Providers/AuthProvider';
-import img from '../../assets/others/authentication2.png';
-import bgCover from '../../assets/others/authentication.png';
+import { useContext, useEffect, useState } from "react";
+import {
+  loadCaptchaEnginge,
+  LoadCanvasTemplate,
+  validateCaptcha,
+} from "react-simple-captcha";
+import { AuthContext } from "../../Providers/AuthProvider";
+import img from "../../assets/others/authentication2.png";
+import bgCover from "../../assets/others/authentication.png";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const{loginUser} = useContext(AuthContext)
-    const[captchaErr, setCaptchaErr] = useState('');
-    useEffect(()=> {
-        loadCaptchaEnginge(4);
-    }, [])
-    const handleLogin= e => {
-        e.preventDefault();
-        const form = e.target;
-        const email = form.email.value;
-        const password = form.password.value;
-        const captcha = form.captcha.value;
-        const isValid = validateCaptcha(captcha);
-        if(isValid){
-          setCaptchaErr('');
-          loginUser(email, password)
-          .then(result => {
-            const user = result.user;
-            console.log(user);
-          })
-
-        }
-        else{
-           setCaptchaErr('Captcha does not match') 
-        }
+  const { loginUser } = useContext(AuthContext);
+  const [captchaErr, setCaptchaErr] = useState("");
+  useEffect(() => {
+    loadCaptchaEnginge(4);
+  }, []);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const captcha = form.captcha.value;
+    const isValid = validateCaptcha(captcha);
+    if (isValid) {
+      setCaptchaErr("");
+      loginUser(email, password)
+    } else {
+      setCaptchaErr("Captcha does not match");
     }
+  };
   return (
-    <div className="md:hero-content min-h-screen" style={{ backgroundImage: `url(${bgCover})` }}>
-      <div className={`hero-content shadow-2xl`}
-      style={{ backgroundImage: `url(${bgCover})` }}>
+    <div
+      className="md:hero-content min-h-screen"
+      style={{ backgroundImage: `url(${bgCover})` }}
+    >
+      <div
+        className={`hero-content shadow-2xl`}
+        style={{ backgroundImage: `url(${bgCover})` }}
+      >
         <div className="md:w-1/2 md:block hidden">
           <img src={img} alt="" />
         </div>
         <div className="md:w-1/2 w-full">
-        <h3 className='text-center text-4xl font-bold mt-2'>Login</h3>
+          <h3 className="text-center text-4xl font-bold mt-2">Login</h3>
           <form onSubmit={handleLogin} className="card-body">
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Email</span>
+                <span className="label-text text-xl font-semibold">Email</span>
               </label>
               <input
                 type="email"
@@ -54,7 +58,9 @@ const Login = () => {
             </div>
             <div className="form-control">
               <label className="label">
-                <span className="label-text">Password</span>
+                <span className="label-text text-xl font-semibold">
+                  Password
+                </span>
               </label>
               <input
                 type="password"
@@ -64,14 +70,14 @@ const Login = () => {
                 required
               />
               <label className="label">
-                <a href="#" className="label-text-alt link link-hover">
+                <a href="#" className="label-text-alt link link-hover text-lg">
                   Forgot password?
                 </a>
               </label>
             </div>
             <div className="form-control">
               <label className="label">
-                 <LoadCanvasTemplate />
+                <LoadCanvasTemplate />
               </label>
               <input
                 type="text"
@@ -80,13 +86,30 @@ const Login = () => {
                 className="input input-bordered"
                 required
               />
-              <span className='text-red-600'>{captchaErr}</span>
+              <span className="text-red-600">{captchaErr}</span>
             </div>
             <div className="form-control mt-6">
-              <input className="btn btn-lg bg-orange-200 btn-primary hover:bg-orange-300 border-0 text-black" type="submit" value="Login" />
+              <input
+                className="btn btn-lg bg-orange-200 btn-primary hover:bg-orange-300 border-0 text-black"
+                type="submit"
+                value="Login"
+              />
+            </div>
+            <div className="form-control mt-6">
+              <p className="text-center text-lg ">
+                New here?{" "}
+                <span>
+                  <Link
+                    to="/registration"
+                    className="font-semibold underline text-yellow-600"
+                  >
+                    Create a New Account
+                  </Link>
+                </span>
+              </p>
             </div>
           </form>
-        </div> 
+        </div>
       </div>
     </div>
   );
