@@ -2,10 +2,40 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import useCarts from "../../../hooks/useCarts";
 import { FaRemoveFormat } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Cart = () => {
-  const [cart] = useCarts();
+  const [cart, refetch] = useCarts();
+  const axiosSecure = useAxiosSecure();
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+
+  const handleDelete = (_id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "green",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/carts/${_id}`).then((res) => {
+          if (res.data.deletedCount) {
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: `Your item has been deleted`,
+              showConfirmButton: false,
+              timer: 1000,
+            });
+            refetch();
+          }
+        });
+      }
+    });
+  };
   return (
     <div>
       <div className="grid grid-cols-3 gap-8">
@@ -36,14 +66,20 @@ const Cart = () => {
             {/* row 1 */}
             {cart?.map((item, index) => (
               <>
-                <tr className="bg-base-200" key={item._id} >
-                  <th>{index+1}</th>
+                <tr className="bg-base-200" key={item._id}>
+                  <th>{index + 1}</th>
                   <td>
-                    <img className="rounded-md md:w-[100px]" src={item.image} alt="" />
+                    <img
+                      className="rounded-md md:w-[100px]"
+                      src={item.image}
+                      alt=""
+                    />
                   </td>
                   <td>{item.name}</td>
                   <td>${item.price}</td>
-                  <td className="text-2xl text-red-400 hover:cursor-pointer"><MdDelete /></td>
+                  <td className="text-3xl text-red-400 hover:cursor-pointer">
+                    <MdDelete onClick={() => handleDelete(item._id)}></MdDelete>
+                  </td>
                 </tr>
               </>
             ))}
