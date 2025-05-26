@@ -46,9 +46,9 @@ const Navbar = () => {
       </li>
       <li>
         <Link
-          to="/"
+          to="/dashboard/cart"
           className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
-            location.pathname === "/" ? "text-yellow-400" : ""
+            location.pathname === "/dashoard/cart" ? "text-yellow-400" : ""
           } focus:!bg-transparent hover:!bg-transparent mt-1`}
         >
           <button className="flex justify-center items-center">
