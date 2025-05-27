@@ -48,7 +48,7 @@ const AuthProvider = ({ children }) => {
           showConfirmButton: false,
           timer: 1500,
         });
-        loading(false);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);

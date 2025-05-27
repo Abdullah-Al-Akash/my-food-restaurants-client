@@ -3,10 +3,14 @@ import { NavLink, Outlet } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // or use any icon you like
 import { FaBook, FaHome, FaListAlt, FaSearch, FaShoppingCart, FaUsers, FaUtensils } from "react-icons/fa";
 import { FaCalendar, FaList } from "react-icons/fa6";
+import useAdmin from "../hooks/useAdmin";
+import useAuth from "../hooks/useAuth";
 
 const Dashboard = () => {
+  const{user} = useAuth();
+  const email = user?.email;
   const [isOpen, setIsOpen] = useState(false);
-  const isAdmin = true;
+  const [isAdmin] = useAdmin(email);
   const activeClass = ({ isActive }) =>
     `flex items-center gap-2 text-xl px-4 py-2 rounded transition-colors duration-200
        ${

@@ -36,6 +36,7 @@ const Cart = () => {
       }
     });
   };
+  
   return (
     <div>
       <div className="grid grid-cols-3 gap-8">
@@ -65,23 +66,21 @@ const Cart = () => {
           <tbody>
             {/* row 1 */}
             {cart?.map((item, index) => (
-              <>
-                <tr className="bg-base-200" key={item._id}>
-                  <th>{index + 1}</th>
-                  <td>
-                    <img
-                      className="rounded-md md:w-[100px]"
-                      src={item.image}
-                      alt=""
-                    />
-                  </td>
-                  <td>{item.name}</td>
-                  <td>${item.price}</td>
-                  <td className="text-3xl text-red-400 hover:cursor-pointer">
-                    <MdDelete onClick={() => handleDelete(item._id)}></MdDelete>
-                  </td>
-                </tr>
-              </>
+              <tr className="bg-base-200" key={item._id}>
+                <th>{index + 1}</th>
+                <td>
+                  <img
+                    className="rounded-md md:w-[100px]"
+                    src={item.image}
+                    alt=""
+                  />
+                </td>
+                <td>{item.name}</td>
+                <td>${item.price}</td>
+                <td className="text-3xl text-red-400 hover:cursor-pointer">
+                  <MdDelete onClick={() => handleDelete(item._id)}></MdDelete>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
