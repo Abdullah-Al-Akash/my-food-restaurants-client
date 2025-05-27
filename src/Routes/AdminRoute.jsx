@@ -1,13 +1,14 @@
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
 
 const AdminRoute = ({ children }) => {
   const { user, loading } = useAuth();
-  const [isAdmin, isAdminLoading] = useAdmin();
+  const [isAdmin, isAdminLoading] = useAdmin(user?.email);
   const location = useLocation();
 
   if (loading || isAdminLoading) {
+    console.log(loading, isAdminLoading);
     return (
       <div className="flex justify-center items-center min-h-screen">
         <span

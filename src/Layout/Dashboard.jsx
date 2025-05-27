@@ -28,10 +28,10 @@ const Dashboard = () => {
         className={`fixed top-0 left-0 h-full w-64 bg-orange-300 p-6 z-40 transform transition-transform duration-300 ease-in-out
           ${
             isOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 md:relative md:flex bg-black`}
+          } md:translate-x-0 md:relative md:flex`}
       >
         {/* <h2 className="text-2xl font-bold mb-4">My Menu</h2> */}
-        <ul className="space-y-4">
+        <ul className="space-y-4 fixed">
           {isAdmin ? (
             <>
               <li onClick={handleClose}>
