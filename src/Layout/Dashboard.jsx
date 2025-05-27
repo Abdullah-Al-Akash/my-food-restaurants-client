@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // or use any icon you like
-import { FaHome, FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaBook, FaHome, FaListAlt, FaSearch, FaShoppingCart, FaUsers, FaUtensils } from "react-icons/fa";
 import { FaCalendar, FaList } from "react-icons/fa6";
 
 const Dashboard = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const isAdmin = true;
   const activeClass = ({ isActive }) =>
     `flex items-center gap-2 text-xl px-4 py-2 rounded transition-colors duration-200
        ${
@@ -27,81 +28,94 @@ const Dashboard = () => {
       >
         {/* <h2 className="text-2xl font-bold mb-4">My Menu</h2> */}
         <ul className="space-y-4">
+          {isAdmin ? (
+            <>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/admin-home" className={activeClass}>
+                  <FaHome />
+                  <span>Admin Home</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/add-items" className={activeClass}>
+                  <FaUtensils></FaUtensils>
+                  <span>Add Items</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/manage-items" className={activeClass}>
+                  <FaListAlt></FaListAlt>
+                  <span>Manage Items</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/manage-bookings" className={activeClass}>
+                  <FaBook></FaBook>
+                  <span>Manage Bookings</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/all-users" className={activeClass}>
+                  <FaUsers></FaUsers>
+                  <span>All Users</span>
+                </NavLink>
+              </li>
+            </>
+          ) : (
+            <>
+              <li onClick={handleClose}>
+                <NavLink to="/" className={activeClass}>
+                  <FaHome />
+                  <span>User Home</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/reservation" className={activeClass}>
+                  <FaCalendar></FaCalendar>
+                  <span>Reservation</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/cart" className={activeClass}>
+                  <FaShoppingCart />
+                  <span>My Cart</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
+                <NavLink to="/dashboard/bookings" className={activeClass}>
+                  <FaList></FaList>
+                  <span>My Bookings</span>
+                </NavLink>
+              </li>
+            </>
+          )}
+          {/* Divider */}
+          <div className="divider"></div>
           <li onClick={handleClose}>
-            <NavLink
-              to="/"
-              className={activeClass}
-            >
-              <FaHome />
-              <span>User Home</span>
-            </NavLink>
-          </li>
-          <li onClick={handleClose}>
-            <NavLink
-              to="/dashboard/reservation"
-              className={activeClass}
-            >
-              <FaCalendar></FaCalendar>
-              <span>Reservation</span>
-            </NavLink>
-          </li>
-          <li onClick={handleClose}>
-            <NavLink
-              to="/dashboard/cart"
-              className={activeClass}
-            >
-              <FaShoppingCart />
-              <span>My Cart</span>
-            </NavLink>
-          </li>
-          <li onClick={handleClose}>
-            <NavLink
-              to="/dashboard/bookings"
-              className={activeClass}
-            >
-              <FaList></FaList>
-              <span>My Bookings</span>
-            </NavLink>
-          </li>
-          <div className="divider"></div> 
-          <li onClick={handleClose}>
-            <NavLink
-              to="/"
-              className={activeClass}
-            >
+            <NavLink to="/" className={activeClass}>
               <FaHome></FaHome>
               <span>Home</span>
             </NavLink>
           </li>
           <li onClick={handleClose}>
-            <NavLink
-              to="/"
-              className={activeClass}
-            >
+            <NavLink to="/" className={activeClass}>
               <FaList></FaList>
               <span>Menu</span>
             </NavLink>
           </li>
           <li onClick={handleClose}>
-            <NavLink
-              to="/order/salads"
-              className={activeClass}
-            >
+            <NavLink to="/order/salads" className={activeClass}>
               <FaHome></FaHome>
               <span>Order Now</span>
             </NavLink>
           </li>
           <li onClick={handleClose}>
-            <NavLink
-              to="/"
-              className={activeClass}
-            >
+            <NavLink to="/" className={activeClass}>
               <FaSearch></FaSearch>
               <span>Contact</span>
             </NavLink>
           </li>
         </ul>
-
       </div>
 
       {/* Overlay */}

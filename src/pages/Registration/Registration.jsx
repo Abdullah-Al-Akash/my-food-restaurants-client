@@ -6,8 +6,10 @@ import { AuthContext } from "../../Providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../hooks/useAxiosPublic";
 
 const Registration = () => {
+  const axiosPublic = useAxiosPublic();
   const [showPassword, setShowPassword] = useState(false);
   const { createUser, updateUser } = useContext(AuthContext);
   const location = useLocation();
@@ -16,30 +18,38 @@ const Registration = () => {
 
   const {
     register,
-    handleSubmit, reset,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
-    console.log(data);
     createUser(data.email, data.password)
       .then((result) => {
         const user = result?.user;
-        updateUser(data.name, '')
-        .then(()=> {
-          console.log("Updated Profile with name");
-          reset();
-        })
-        console.log("User", user);
-        user &&
-          Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Registration Done",
-            showConfirmButton: false,
-            timer: 1500,
+        updateUser(data.name, "").then(() => {
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+            password: data.password,
+            photo: "",
+            role: "user",
+          };
+          axiosPublic.post("/users", userInfo).then((res) => {
+            console.log(res);
+            if (res.data.insertedId) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Registration Done",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+              navigate(from, { replace: true });
+              reset();
+            }
           });
-        user && navigate(from, { replace: true });
+        });
       })
       .catch((err) => {
         console.log(err);
