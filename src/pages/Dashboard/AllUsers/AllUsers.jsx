@@ -93,31 +93,31 @@ const AllUsers = () => {
           <tbody>
             {/* row 1 */}
             {users?.map((user, index) => (
-              <>
-                <tr className="bg-base-200" key={user._id}>
-                  <th>{index + 1}</th>
-                  <td className="text-lg font-semibold">{user.name}</td>
-                  <td className="text-lg font-semibold">{user.email}</td>
-                  <td className="text-3xl text-green-400 hover:cursor-pointer">
-                    {user?.role == "admin" ? (
-                      <>
-                       <span className="text-xl text-green-700 font-semibold bg-green-200 text-center px-2 py-1 rounded-md">Admin</span>
-                      </>
-                    ) : (
-                      <FaUsers
-                        onClick={() => {
-                          handleMaketoAdmin(user._id);
-                        }}
-                      ></FaUsers>
-                    )}
-                  </td>
-                  <td className="text-3xl text-red-400 hover:cursor-pointer">
-                    <MdDelete
-                      onClick={() => handleDeleteUser(user._id)}
-                    ></MdDelete>
-                  </td>
-                </tr>
-              </>
+              <tr key={user._id} className="bg-base-200" key={user._id}>
+                <th>{index + 1}</th>
+                <td className="text-lg font-semibold">{user.name}</td>
+                <td className="text-lg font-semibold">{user.email}</td>
+                <td className="text-3xl text-green-400 hover:cursor-pointer">
+                  {user?.role == "admin" ? (
+                    <>
+                      <span className="text-xl text-green-700 font-semibold bg-green-200 text-center px-2 py-1 rounded-md">
+                        Admin
+                      </span>
+                    </>
+                  ) : (
+                    <FaUsers
+                      onClick={() => {
+                        handleMaketoAdmin(user._id);
+                      }}
+                    ></FaUsers>
+                  )}
+                </td>
+                <td className="text-3xl text-red-400 hover:cursor-pointer">
+                  <MdDelete
+                    onClick={() => handleDeleteUser(user._id)}
+                  ></MdDelete>
+                </td>
+              </tr>
             ))}
           </tbody>
         </table>
