@@ -38,6 +38,39 @@ const ManageItems = () => {
     });
   };
 
+  // Final Update Content:
+  const handleUpdateSubmit = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const category = form.category.value;
+    const price = parseFloat(form.price.value);
+    const recipe = form.recipe.value;
+
+    const updatedItem = { name, category, price, recipe };
+    console.log(updatedItem);
+
+    try {
+      const res = await axiosSecure.patch(
+        `/item/${selectedItem._id}`,
+        updatedItem
+      );
+      if (res.data.modifiedCount > 0) {
+        Swal.fire({
+          icon: "success",
+          title: "Item Updated!",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+        form.reset();
+        document.getElementById("my_modal_3").close();
+        refetch();
+      }
+    } catch (err) {
+      console.error("Update failed:", err);
+    }
+  };
+
   const handleUpdateItem = (item) => {
     setSelectedItem(item);
     // Update the item:
@@ -62,44 +95,80 @@ const ManageItems = () => {
             </button>
           </form>
           {selectedItem && (
-            <div className="form-control p-4">
-              <label className="input-group input-group-sm">
-                <span>Name</span>
+            <form
+              onSubmit={handleUpdateSubmit}
+              className="form-control p-4 space-y-4"
+            >
+              {/* Name */}
+              <div>
+                <label className="block mb-1 text-sm font-semibold">Name</label>
                 <input
+                  name="name"
                   type="text"
-                  placeholder="Type here"
                   defaultValue={selectedItem?.name}
-                  className="input input-bordered input-md w-full"
+                  placeholder="Enter item name"
+                  className="w-full p-3 text-base border-2 border-orange-100 rounded-lg focus:outline-none focus:border-orange-300"
                 />
-              </label>
-              <div className="input-group mt-2 flex">
-                <div>
-                  <select className="select select-bordered">
-                    <option disabled selected>
-                      Select category
-                    </option>
-                    <option>T-shirts</option>
-                    <option>Mugs</option>
+              </div>
+
+              {/* Category and Price */}
+              <div className="flex flex-col md:flex-row md:items-center md:space-x-4">
+                {/* Category */}
+                <div className="flex-1">
+                  <label className="block mb-1 text-sm font-semibold">
+                    Category
+                  </label>
+                  <select
+                    name="category"
+                    defaultValue={selectedItem?.category}
+                    className="w-full p-3 text-base border-2 border-orange-100 rounded-lg focus:outline-none focus:border-orange-300"
+                  >
+                    <option disabled>Select category</option>
+                    <option value="salad">Salad</option>
+                    <option value="pizza">Pizza</option>
+                    <option value="dessert">Dessert</option>
+                    <option value="drinks">Drinks</option>
+                    <option value="soup">Soup</option>
                   </select>
                 </div>
-                <div className="ms-2 flex-shrink-1">
-                  <label className="input-group input-group-sm">
-                    <span>Price</span>
-                    <input
-                      type="text"
-                      placeholder="Type here"
-                      defaultValue={selectedItem?.price}
-                      className="input input-bordered input-md w-full"
-                    />
+
+                {/* Price */}
+                <div className="flex-1 mt-4 md:mt-0">
+                  <label className="block mb-1 text-sm font-semibold">
+                    Price
                   </label>
+                  <input
+                    name="price"
+                    type="text"
+                    defaultValue={selectedItem?.price}
+                    placeholder="Enter price"
+                    className="w-full p-3 text-base border-2 border-orange-100 rounded-lg focus:outline-none focus:border-orange-300"
+                  />
                 </div>
               </div>
+
+              {/* Recipe */}
               <div>
-                <h3 className="mt-2 mb-1">Recipe Details</h3>
-                <textarea className="textarea textarea-warning w-full" placeholder="" defaultValue={selectedItem.recipe}></textarea>
+                <label className="block mb-1 text-sm font-semibold">
+                  Recipe Details
+                </label>
+                <textarea
+                  name="recipe"
+                  rows="4"
+                  defaultValue={selectedItem?.recipe}
+                  placeholder="Enter recipe details"
+                  className="w-full p-3 text-base border-2 border-orange-100 rounded-lg focus:outline-none focus:border-orange-300"
+                ></textarea>
               </div>
-              <input className="btn btn-lg bg-orange-200 btn-primary hover:bg-orange-300 border-0 text-black mt-2" type="submit" value="Update Item" />
-            </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="btn btn-lg bg-orange-200 hover:bg-orange-300 border-0 text-black w-full normal-case"
+              >
+                Update Item
+              </button>
+            </form>
           )}
         </div>
       </dialog>
