@@ -7,7 +7,7 @@ import useCarts from "../../../hooks/useCarts";
 
 const CheckOutForm = ({ onClose, data }) => {
   const { user } = useAuth();
-  const[cart, refetch] = useCarts();
+  const [cart, refetch] = useCarts();
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
@@ -15,14 +15,16 @@ const CheckOutForm = ({ onClose, data }) => {
   const [transactionId, setTransactionId] = useState("");
 
   useEffect(() => {
-    axiosSecure
-      .post("/create-payment", {
-        price: data,
-      })
-      .then((res) => {
-        console.log(res.data.clientSecret);
-        setClientSecret(res.data.clientSecret);
-      });
+    if (data > 0) {
+      axiosSecure
+        .post("/create-payment", {
+          price: data,
+        })
+        .then((res) => {
+          console.log(res.data.clientSecret);
+          setClientSecret(res.data.clientSecret);
+        });
+    }
   }, [axiosSecure, data]);
   const handleSubmitPayment = async (event) => {
     event.preventDefault();
@@ -73,14 +75,14 @@ const CheckOutForm = ({ onClose, data }) => {
           email: user?.email,
           price: data,
           transactionId: paymentIntent.id,
-          date: new Date,
-          cartIds: cart.map(item => item._id),
-          foodIds: cart.map(item => item.foodId),
-          status: 'pending'
-        }
+          date: new Date(),
+          cartIds: cart.map((item) => item._id),
+          foodIds: cart.map((item) => item.foodId),
+          status: "pending",
+        };
 
-        const res = await axiosSecure.post('/payment-done', paymentInfo);
-        refetch()
+        await axiosSecure.post("/payment-done", paymentInfo);
+        refetch();
       }
     }
   };

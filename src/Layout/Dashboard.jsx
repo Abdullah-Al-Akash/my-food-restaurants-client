@@ -52,12 +52,12 @@ const Dashboard = () => {
                   <span>Manage Items</span>
                 </NavLink>
               </li>
-              <li onClick={handleClose}>
-                <NavLink to="/dashboard/manage-bookings" className={activeClass}>
+              {/* <li onClick={handleClose}>
+                <NavLink to="/dashboard/payment-history" className={activeClass}>
                   <FaBook></FaBook>
-                  <span>Manage Bookings</span>
+                  <span>Payment History</span>
                 </NavLink>
-              </li>
+              </li> */}
               <li onClick={handleClose}>
                 <NavLink to="/dashboard/all-users" className={activeClass}>
                   <FaUsers></FaUsers>
@@ -86,9 +86,9 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li onClick={handleClose}>
-                <NavLink to="/dashboard/bookings" className={activeClass}>
+                <NavLink to="/dashboard/payment-history" className={activeClass}>
                   <FaList></FaList>
-                  <span>My Bookings</span>
+                  <span>Payment History</span>
                 </NavLink>
               </li>
             </>
@@ -131,7 +131,7 @@ const Dashboard = () => {
       )}
 
       {/* Main content */}
-      <div className="flex-1 p-4">
+      <div className="flex-1 p-8">
         {/* Hamburger */}
         <button className="md:hidden mb-4" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={28} /> : <Menu size={28} />}

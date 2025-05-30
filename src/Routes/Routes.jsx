@@ -11,6 +11,7 @@ import Cart from "../pages/Dashboard/Cart/Cart";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
 import AdminRoute from "./AdminRoute";
 import ManageItems from "../pages/Dashboard/ManageItems/ManageItems";
+import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,7 @@ export const router = createBrowserRouter([
     ),
     children: [
       { path: "cart", element: <Cart></Cart> },
+      { path: "payment-history", element: <PaymentHistory></PaymentHistory> },
 
       // Admin Routes
       {
