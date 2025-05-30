@@ -1,14 +1,21 @@
-import { FaDeleteLeft } from "react-icons/fa6";
 import useCarts from "../../../hooks/useCarts";
-import { FaRemoveFormat } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
+import Payment from "../Payment/Payment";
+import { useState } from "react";
 
 const Cart = () => {
   const [cart, refetch] = useCarts();
   const axiosSecure = useAxiosSecure();
   const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+  // Handle Payment:
+  const [showModal, setShowModal] = useState(false);
+  const [paymentData, setPaymentData] = useState(null);
+  const handlePayNow = () => {
+    setPaymentData({ totalPrice: 50 });
+    setShowModal(true); // Open modal
+  };
 
   const handleDelete = (_id) => {
     Swal.fire({
@@ -36,7 +43,7 @@ const Cart = () => {
       }
     });
   };
-  
+
   return (
     <div>
       <div className="grid grid-cols-3 gap-8">
@@ -46,9 +53,16 @@ const Cart = () => {
         <h3 className="md:text-3xl font-semibold">
           Total Price: ${totalPrice}
         </h3>
-        <button className="btn normal-case btn-neutral border-yellow-600 border-b-4 border-0">
+        <button
+          disabled={!totalPrice}
+          onClick={handlePayNow}
+          className="btn normal-case btn-neutral border-yellow-600 border-b-4 border-0"
+        >
           Pay Now
         </button>
+        {showModal && (
+          <Payment data={totalPrice} onClose={() => setShowModal(false)} />
+        )}
       </div>
       {/* Table */}
       <div className="overflow-x-auto py-8">
