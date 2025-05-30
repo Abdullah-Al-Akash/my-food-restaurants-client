@@ -31,7 +31,7 @@ const Payment = ({ data, onClose }) => {
           ✕
         </button>
         <Elements stripe={stripePromise}>
-          <CheckOutForm data={data}></CheckOutForm>
+          <CheckOutForm onClose={onClose} data={data}></CheckOutForm>
         </Elements>
       </div>
     </div>

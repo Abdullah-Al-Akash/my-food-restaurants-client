@@ -17,6 +17,10 @@ const Cart = () => {
     setShowModal(true); // Open modal
   };
 
+  const onClose = () => {
+    setShowModal(false)
+  }
+
   const handleDelete = (_id) => {
     Swal.fire({
       title: "Are you sure?",
@@ -43,7 +47,7 @@ const Cart = () => {
       }
     });
   };
-
+  
   return (
     <div>
       <div className="grid grid-cols-3 gap-8">
@@ -61,7 +65,7 @@ const Cart = () => {
           Pay Now
         </button>
         {showModal && (
-          <Payment data={totalPrice} onClose={() => setShowModal(false)} />
+          <Payment data={totalPrice} onClose={onClose} />
         )}
       </div>
       {/* Table */}

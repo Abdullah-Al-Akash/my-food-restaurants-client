@@ -3,9 +3,11 @@ import { useEffect, useState } from "react";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
+import useCarts from "../../../hooks/useCarts";
 
-const CheckOutForm = ({ data }) => {
+const CheckOutForm = ({ onClose, data }) => {
   const { user } = useAuth();
+  const[cart, refetch] = useCarts();
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
@@ -66,6 +68,19 @@ const CheckOutForm = ({ data }) => {
           showConfirmButton: false,
           timer: 1500,
         });
+        onClose();
+        const paymentInfo = {
+          email: user?.email,
+          price: data,
+          transactionId: paymentIntent.id,
+          date: new Date,
+          cartIds: cart.map(item => item._id),
+          foodIds: cart.map(item => item.foodId),
+          status: 'pending'
+        }
+
+        const res = await axiosSecure.post('/payment-done', paymentInfo);
+        refetch()
       }
     }
   };
