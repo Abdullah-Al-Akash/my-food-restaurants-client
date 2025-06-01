@@ -48,6 +48,7 @@ const OrderFood = () => {
           <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
             {
               saladItems?.map(salad => <FoodCard
+              key={salad._id}
               item = {salad}
               ></FoodCard>)
             }
@@ -57,6 +58,7 @@ const OrderFood = () => {
           <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
             {
               pizzatItems?.map(salad => <FoodCard
+              key={salad._id}
               item = {salad}
               ></FoodCard>)
             }
@@ -66,6 +68,7 @@ const OrderFood = () => {
           <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
             {
               soupItems?.map(salad => <FoodCard
+              key={salad._id}
               item = {salad}
               ></FoodCard>)
             }
@@ -75,6 +78,7 @@ const OrderFood = () => {
           <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
             {
               dessertItems?.map(salad => <FoodCard
+              key={salad._id}
               item = {salad}
               ></FoodCard>)
             }
@@ -84,6 +88,7 @@ const OrderFood = () => {
           <div className="grid md:grid-cols-3 gap-8 px-4 py-10">
             {
               drinksItems?.map(salad => <FoodCard
+              key={salad._id}
               item = {salad}
               ></FoodCard>)
             }

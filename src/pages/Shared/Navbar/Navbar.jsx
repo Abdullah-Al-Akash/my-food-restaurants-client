@@ -4,10 +4,12 @@ import { useContext } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { FaCartPlus } from "react-icons/fa6";
 import useCarts from "../../../hooks/useCarts";
+import useAdmin from "../../../hooks/useAdmin";
 
 const Navbar = () => {
   const location = useLocation();
   const { user, logOut, loading } = useContext(AuthContext);
+  const [isAdmin] = useAdmin(user?.email);
   const [cart] = useCarts();
   const handleLogout = () => {
     logOut();
@@ -42,6 +44,16 @@ const Navbar = () => {
           } focus:!bg-transparent hover:!bg-transparent`}
         >
           Order Food
+        </Link>
+      </li>
+      <li>
+        <Link
+          to={`${user && isAdmin ? '/dashboard/admin-home': '/dashboard/user-home'}`}
+          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
+            location.pathname === "/dashboard" ? "text-yellow-400" : ""
+          } focus:!bg-transparent hover:!bg-transparent`}
+        >
+          Dashboard
         </Link>
       </li>
       <li>

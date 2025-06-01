@@ -30,6 +30,7 @@ const PaymentHistory = () => {
               <th className="md:text-xl">Date</th>
               <th className="md:text-xl">Transaction ID</th>
               <th className="md:text-xl">Total</th>
+              <th className="md:text-xl">Status</th>
               <th className="md:text-xl">Details</th>
             </tr>
           </thead>
@@ -46,9 +47,10 @@ const PaymentHistory = () => {
               return (
                 <tr className="bg-base-200" key={payment._id}>
                   <th>{index + 1}</th>
-                  <td>{formattedDate}</td>
-                  <td>{payment.transactionId}</td>
-                  <td>${payment.price}</td>
+                  <td className="font-semibold">{formattedDate}</td>
+                  <td className="text-blue-500 font-semibold">{payment.transactionId}</td>
+                  <td className="font-semibold text-green-500">${payment.price}</td>
+                  <td><span className={`${payment.status === "cooking"? "bg-red-100 text-red-600 font-semibold px-2 py-1 rounded-full" : "bg-green-100 text-green-600 font-semibold px-2 py-1 rounded-full"}`}>{payment.status}</span></td>
                   <td>
                     <button
                       onClick={() => handleFoodDetails(payment._id)}
