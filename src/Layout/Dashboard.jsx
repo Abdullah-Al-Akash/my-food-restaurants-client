@@ -68,7 +68,7 @@ const Dashboard = () => {
           ) : (
             <>
               <li onClick={handleClose}>
-                <NavLink to="/" className={activeClass}>
+                <NavLink to="/dashboard/user-home" className={activeClass}>
                   <FaHome />
                   <span>User Home</span>
                 </NavLink>

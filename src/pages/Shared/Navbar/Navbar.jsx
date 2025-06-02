@@ -148,7 +148,7 @@ const Navbar = () => {
                 <div className="avatar online">
                   <div className="w-12 rounded-full bg-yellow-50">
                     {dUser?.photo ? (
-                      <img src="https://img.freepik.com/premium-vector/cartoon-charactor-tom_1115593-426.jpg?semt=ais_items_boosted&w=740" />
+                      <img src={dUser?.photo || ""} />
                     ) : (
                       <div className="flex items-center justify-center mt-1">
                         <h3 className="text-3xl text-yellow-500">{dUser?.name.charAt(0)}</h3>
