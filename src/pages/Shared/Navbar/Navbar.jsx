@@ -1,16 +1,41 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../../Providers/AuthProvider";
 import { FaCartPlus } from "react-icons/fa6";
 import useCarts from "../../../hooks/useCarts";
 import useAdmin from "../../../hooks/useAdmin";
+import logo from "../../../assets/logo.png";
+import useUser from "../../../hooks/useUser";
 
 const Navbar = () => {
   const location = useLocation();
   const { user, logOut, loading } = useContext(AuthContext);
   const [isAdmin] = useAdmin(user?.email);
   const [cart] = useCarts();
+  const { dUser } = useUser();
+  // For User Menu
+  // ----------------------------------------------------
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown if clicked outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Toggle dropdown open/close
+  const toggleDropdown = () => setIsOpen(!isOpen);
+
+  // Handle click on item — close dropdown
+  const handleItemClick = () => setIsOpen(false);
+  // -----------------------------------------------------
   const handleLogout = () => {
     logOut();
   };
@@ -48,7 +73,9 @@ const Navbar = () => {
       </li>
       <li>
         <Link
-          to={`${user && isAdmin ? '/dashboard/admin-home': '/dashboard/user-home'}`}
+          to={`${
+            user && isAdmin ? "/dashboard/admin-home" : "/dashboard/user-home"
+          }`}
           className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
             location.pathname === "/dashboard" ? "text-yellow-400" : ""
           } focus:!bg-transparent hover:!bg-transparent`}
@@ -99,8 +126,8 @@ const Navbar = () => {
               {navOptions}
             </ul>
           </div>
-          <Link to="/" className="btn btn-ghost normal-case text-2xl">
-            Bistro Boss
+          <Link to="/" className="">
+            <img className="w-[200px]" src={logo} alt="" />
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
@@ -110,16 +137,74 @@ const Navbar = () => {
           {loading ? (
             <span className="loading loading-spinner text-warning me-8"></span>
           ) : user ? (
-            <button
-              onClick={handleLogout}
-              className="btn normal-case btn-neutral border-yellow-600 border-b-4 border-0 text-xl"
-            >
-              Logout
-            </button>
+            //-----------------User Dropdown-------------------------
+            <div className="dropdown dropdown-end" ref={dropdownRef}>
+              <button
+                onClick={toggleDropdown}
+                className="avatar"
+                aria-haspopup="true"
+                aria-expanded={isOpen}
+              >
+                <div className="avatar online">
+                  <div className="w-12 rounded-full bg-yellow-50">
+                    {dUser?.photo ? (
+                      <img src="https://img.freepik.com/premium-vector/cartoon-charactor-tom_1115593-426.jpg?semt=ais_items_boosted&w=740" />
+                    ) : (
+                      <div className="flex items-center justify-center mt-1">
+                        <h3 className="text-3xl text-yellow-500">{dUser?.name.charAt(0)}</h3>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </button>
+              {isOpen && (
+                <ul
+                  tabIndex={0}
+                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                >
+                  <li>
+                    <Link
+                      to={`${
+                        isAdmin ? "dashboard/admin-home" : "dashboard/user-home"
+                      }`}
+                      onClick={handleItemClick}
+                      className="mt-2 justify-between"
+                      href="#"
+                    >
+                      Profile
+                      <span className="badge">New</span>
+                    </Link>
+                  </li>
+                  <li>
+                    <a className="mt-2" onClick={handleItemClick} href="#">
+                      Settings
+                    </a>
+                  </li>
+                  <li>
+                    <Link
+                      to="/"
+                      className="mt-2"
+                      onClick={handleLogout}
+                      href="#"
+                    >
+                      Logout
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </div>
           ) : (
+            //-------------------------User DropDown---------------------
+            // <button
+            //   onClick={handleLogout}
+            //   className="btn normal-case btn-neutral border-yellow-600 border-b-4 border-0 text-xl"
+            // >
+            //   Logout
+            // </button>
+
             <Link
               to="login"
-              className="btn btn-neutral normal-case border-yellow-600 border-b-4 border-0 text-xl"
+              className="btn btn-sm btn-neutral normal-case border-yellow-600 border-b-2 border-0 text-md font-semibold"
             >
               Login
             </Link>
