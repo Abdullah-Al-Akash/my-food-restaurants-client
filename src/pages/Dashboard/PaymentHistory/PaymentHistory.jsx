@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import usePaymentDetails from "../../../hooks/usePaymentDetails";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { FaDownload } from "react-icons/fa6";
+import { FaDownload, FaRegStar, FaStar } from "react-icons/fa6";
 import useUser from "../../../hooks/useUser";
 import logo from "/logo.png";
 import html2canvas from "html2canvas";
@@ -10,12 +10,17 @@ import html2pdf from "html2pdf.js";
 import processing from "../../../assets/gify/processing.gif";
 import deliver from "../../../assets/gify/delivery-service.gif";
 import cooking from "../../../assets/gify/chef.gif";
+import { Rating } from "@smastrom/react-rating";
+import { FcFeedback } from "react-icons/fc";
+import Swal from "sweetalert2";
 
 const PaymentHistory = () => {
   const { dUser } = useUser();
+  const [rating, setRating] = useState(5);
   const [paymentDetails] = usePaymentDetails();
   const [foods, setFoods] = useState([]);
   const [orderDetail, setOrderDetail] = useState({});
+  const [reviewDetails, setReviewDetails] = useState({});
   const axiosSecure = useAxiosSecure();
   const handleFoodDetails = async (detail, id) => {
     console.log(detail);
@@ -27,6 +32,49 @@ const PaymentHistory = () => {
       setFoods(res?.data);
       document.getElementById("my_modal_3").showModal();
     });
+  };
+
+  // Handle Review Part:
+  const handleReview = (foodDetails) => {
+    document.getElementById("my_modal_1").showModal();
+    setReviewDetails(foodDetails);
+  };
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    const usersReview = {
+      name: dUser?.name,
+      photo: dUser?.photo,
+      rating: rating,
+      details: e.target.details.value,
+    };
+    await axiosSecure
+      .post(`/review/${reviewDetails._id}`, usersReview)
+      .then((res) => {
+        console.log(res);
+        if (
+          res?.data?.result1?.modifiedCount > 1 ||
+          res?.data?.result2?.insertedId
+        ) {
+          Swal.fire({
+            position: "top-center",
+            icon: "success",
+            title: "Feedback Accepted!",
+            text: "Your Feedback is always valuable for us! Thank You",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        } else {
+          Swal.fire({
+            position: "top-center",
+            icon: "error",
+            title: "Something Wrong!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
+        document.getElementById("my_modal_1").close();
+      });
   };
 
   // Invoice Part:
@@ -83,6 +131,7 @@ const PaymentHistory = () => {
               <th className="md:text-xl">Total</th>
               <th className="md:text-xl">Status</th>
               <th className="md:text-xl">Details</th>
+              <th className="md:text-xl">Feedback</th>
             </tr>
           </thead>
           <tbody>
@@ -118,7 +167,18 @@ const PaymentHistory = () => {
                             : "text-green-500 bg-green-100 "
                         } font-semibold px-2 py-1 rounded-2xl flex items-center justify-center`}
                       >
-                        {payment.status} <img className="w-[30px] ms-2 rounded-lg" src={`${payment.status === "delivered"? deliver : payment.status === "processing"? processing : cooking}`} alt="" />
+                        {payment.status}{" "}
+                        <img
+                          className="w-[30px] ms-2 rounded-lg"
+                          src={`${
+                            payment.status === "delivered"
+                              ? deliver
+                              : payment.status === "processing"
+                              ? processing
+                              : cooking
+                          }`}
+                          alt=""
+                        />
                       </span>
                     </td>
                     <td>
@@ -128,6 +188,24 @@ const PaymentHistory = () => {
                       >
                         Details
                       </button>
+                    </td>
+                    <td className="">
+                      {payment?.status === "delivered" ? (
+                        <div className="flex justify-center items-center">
+                          <button
+                            disabled={payment?.review}
+                            onClick={() => handleReview(payment)}
+                            className="btn btn-sm normal-case bg-green-300 text-green-600"
+                          >
+                            Review{" "}
+                          </button>
+                          <FaStar className="text-orange-400"></FaStar>
+                        </div>
+                      ) : (
+                        <span className="text-orange-400 font-semibold">
+                          Upcomming
+                        </span>
+                      )}
                     </td>
                   </tr>
                 );
@@ -252,6 +330,42 @@ const PaymentHistory = () => {
           >
             Download PDF
           </button>
+        </div>
+      </dialog>
+
+      {/* Review Part */}
+      <dialog id="my_modal_1" className="modal">
+        <div className="modal-box">
+          <SectionTitle
+            heading={"Feedback"}
+            subHeading={"We ll show it!"}
+          ></SectionTitle>
+          <form onSubmit={handleSubmitReview}>
+            <div className="flex justify-center">
+              <Rating
+                style={{ maxWidth: 180 }}
+                value={rating}
+                onChange={setRating}
+                required
+              />
+            </div>
+            <div className="px-4 pt-4">
+              <textarea
+                name="details"
+                className="textarea textarea-warning w-full h-[150px] p-4"
+                placeholder="Write your speech here..."
+                required
+              ></textarea>
+            </div>
+            <div className="p-4">
+              <button
+                type="submit"
+                className="flex justify-center items-center text-lg btn bg-orange-300 hover:bg-orange-500 hover:text-white normal-case btn-block"
+              >
+                Feedback <FcFeedback></FcFeedback>{" "}
+              </button>
+            </div>
+          </form>
         </div>
       </dialog>
     </div>

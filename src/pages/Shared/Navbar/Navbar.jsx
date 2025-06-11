@@ -61,16 +61,7 @@ const Navbar = () => {
           Menu
         </Link>
       </li>
-      <li>
-        <Link
-          to="/order/salads"
-          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
-            location.pathname === "/order/salads" ? "text-yellow-400" : ""
-          } focus:!bg-transparent hover:!bg-transparent`}
-        >
-          Order Food
-        </Link>
-      </li>
+
       {/* <li>
         <Link
           to={`${
@@ -83,19 +74,35 @@ const Navbar = () => {
           Dashboard
         </Link>
       </li> */}
-      <li>
-        <Link
-          to="/dashboard/cart"
-          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
-            location.pathname === "/dashoard/cart" ? "text-yellow-400" : ""
-          } focus:!bg-transparent hover:!bg-transparent mt-1`}
-        >
-          <button className="flex justify-center items-center">
-            <FaCartPlus />
-            <div className="badge badge-warning ms-2">{cart.length}</div>
-          </button>
-        </Link>
-      </li>
+      {dUser?.role === "admin" ? (
+        ""
+      ) : (
+        <>
+          <li>
+            <Link
+              to="/order/salads"
+              className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
+                location.pathname === "/order/salads" ? "text-yellow-400" : ""
+              } focus:!bg-transparent hover:!bg-transparent`}
+            >
+              Order Food
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/dashboard/cart"
+              className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
+                location.pathname === "/dashoard/cart" ? "text-yellow-400" : ""
+              } focus:!bg-transparent hover:!bg-transparent mt-1`}
+            >
+              <button className="flex justify-center items-center">
+                <FaCartPlus />
+                <div className="badge badge-warning ms-2">{cart.length}</div>
+              </button>
+            </Link>
+          </li>
+        </>
+      )}
     </>
   );
   return (
@@ -190,27 +197,34 @@ const Navbar = () => {
                         <span className="badge">New</span>
                       </Link>
                     </li>
-                    <li>
-                      <Link
-                        to="/dashboard/cart"
-                        className="mt-2"
-                        onClick={handleItemClick}
-                      >
-                        My cart
-                        <div className="badge badge-warning ms-2">
-                          {cart.length}
-                        </div>
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to="/dashboard/payment-history"
-                        className="mt-2"
-                        onClick={handleItemClick}
-                      >
-                        History
-                      </Link>
-                    </li>
+                    {dUser?.role === "admin" ? (
+                      ""
+                      //Here Need to add admin Menu  Task1
+                    ) : (
+                      <>
+                        <li>
+                          <Link
+                            to="/dashboard/cart"
+                            className="mt-2"
+                            onClick={handleItemClick}
+                          >
+                            My cart
+                            <div className="badge badge-warning ms-2">
+                              {cart.length}
+                            </div>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link
+                            to="/dashboard/payment-history"
+                            className="mt-2"
+                            onClick={handleItemClick}
+                          >
+                            History
+                          </Link>
+                        </li>
+                      </>
+                    )}
                     <li>
                       <Link to="/" className="mt-2" onClick={handleLogout}>
                         Logout
