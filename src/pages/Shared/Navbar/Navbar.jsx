@@ -71,7 +71,7 @@ const Navbar = () => {
           Order Food
         </Link>
       </li>
-      <li>
+      {/* <li>
         <Link
           to={`${
             user && isAdmin ? "/dashboard/admin-home" : "/dashboard/user-home"
@@ -82,7 +82,7 @@ const Navbar = () => {
         >
           Dashboard
         </Link>
-      </li>
+      </li> */}
       <li>
         <Link
           to="/dashboard/cart"
@@ -138,60 +138,87 @@ const Navbar = () => {
             <span className="loading loading-spinner text-warning me-8"></span>
           ) : user ? (
             //-----------------User Dropdown-------------------------
-            <div className="dropdown dropdown-end" ref={dropdownRef}>
-              <button
-                onClick={toggleDropdown}
-                className="avatar"
-                aria-haspopup="true"
-                aria-expanded={isOpen}
-              >
-                <div className="avatar online">
-                  <div className="w-12 rounded-full bg-yellow-50">
-                    {dUser?.photo ? (
-                      <img src={dUser?.photo || ""} />
-                    ) : (
-                      <div className="flex items-center justify-center mt-1">
-                        <h3 className="text-3xl text-yellow-500">{dUser?.name.charAt(0)}</h3>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </button>
-              {isOpen && (
-                <ul
-                  tabIndex={0}
-                  className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+            <div className="flex items-center">
+              <div className="pe-4 md:hidden">
+                <Link to="/dashboard/cart">
+                  <button className="flex justify-center items-center text-white text-xl">
+                    <FaCartPlus />
+                    <div className="badge badge-warning ms-2">
+                      {cart.length}
+                    </div>
+                  </button>
+                </Link>
+              </div>
+              <div className="dropdown dropdown-end" ref={dropdownRef}>
+                <button
+                  onClick={toggleDropdown}
+                  className="avatar"
+                  aria-haspopup="true"
+                  aria-expanded={isOpen}
                 >
-                  <li>
-                    <Link
-                      to={`${
-                        isAdmin ? "dashboard/admin-home" : "dashboard/user-home"
-                      }`}
-                      onClick={handleItemClick}
-                      className="mt-2 justify-between"
-                      href="#"
-                    >
-                      Profile
-                      <span className="badge">New</span>
-                    </Link>
-                  </li>
-                  <li>
-                    <a className="mt-2" onClick={handleItemClick} href="#">
-                      Settings
-                    </a>
-                  </li>
-                  <li>
-                    <Link
-                      to="/"
-                      className="mt-2"
-                      onClick={handleLogout}
-                      href="#"
-                    >
-                      Logout
-                    </Link>
-                  </li>
-                </ul>
-              )}
+                  <div className="avatar online">
+                    <div className="w-12 rounded-full bg-yellow-50">
+                      {dUser?.photo ? (
+                        <img src={dUser?.photo || ""} />
+                      ) : (
+                        <div className="flex items-center justify-center mt-1">
+                          <h3 className="text-3xl text-yellow-500">
+                            {dUser?.name.charAt(0)}
+                          </h3>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </button>
+                {isOpen && (
+                  <ul
+                    tabIndex={0}
+                    className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+                  >
+                    <li>
+                      <Link
+                        to={`${
+                          isAdmin
+                            ? "dashboard/admin-home"
+                            : "dashboard/user-home"
+                        }`}
+                        onClick={handleItemClick}
+                        className="mt-2 justify-between"
+                        href="#"
+                      >
+                        Profile
+                        <span className="badge">New</span>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/dashboard/cart"
+                        className="mt-2"
+                        onClick={handleItemClick}
+                      >
+                        My cart
+                        <div className="badge badge-warning ms-2">
+                          {cart.length}
+                        </div>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/dashboard/payment-history"
+                        className="mt-2"
+                        onClick={handleItemClick}
+                      >
+                        History
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/" className="mt-2" onClick={handleLogout}>
+                        Logout
+                      </Link>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </div>
           ) : (
             //-------------------------User DropDown---------------------

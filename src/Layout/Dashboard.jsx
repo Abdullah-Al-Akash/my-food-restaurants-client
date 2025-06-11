@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // or use any icon you like
 import { FaBook, FaHome, FaListAlt, FaSearch, FaShoppingCart, FaUsers, FaUtensils } from "react-icons/fa";
-import { FaCalendar, FaList } from "react-icons/fa6";
+import { FaBorderAll, FaCalendar, FaList } from "react-icons/fa6";
 import useAdmin from "../hooks/useAdmin";
 import useAuth from "../hooks/useAuth";
 
@@ -47,6 +47,12 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li onClick={handleClose}>
+                <NavLink to="/dashboard/manage-orders" className={activeClass}>
+                  <FaBorderAll />
+                  <span>Manage Orders</span>
+                </NavLink>
+              </li>
+              <li onClick={handleClose}>
                 <NavLink to="/dashboard/manage-items" className={activeClass}>
                   <FaListAlt></FaListAlt>
                   <span>Manage Items</span>
@@ -70,13 +76,7 @@ const Dashboard = () => {
               <li onClick={handleClose}>
                 <NavLink to="/dashboard/user-home" className={activeClass}>
                   <FaHome />
-                  <span>User Home</span>
-                </NavLink>
-              </li>
-              <li onClick={handleClose}>
-                <NavLink to="/dashboard/reservation" className={activeClass}>
-                  <FaCalendar></FaCalendar>
-                  <span>Reservation</span>
+                  <span>My Profile</span>
                 </NavLink>
               </li>
               <li onClick={handleClose}>

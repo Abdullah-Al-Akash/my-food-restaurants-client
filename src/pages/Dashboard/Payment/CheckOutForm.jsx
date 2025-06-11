@@ -4,8 +4,10 @@ import useAxiosSecure from "../../../hooks/useAxiosSecure";
 import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useCarts from "../../../hooks/useCarts";
+import useUser from "../../../hooks/useUser";
 
 const CheckOutForm = ({ onClose, data }) => {
+  const { dUser } = useUser();
   const { user } = useAuth();
   const [cart, refetch] = useCarts();
   const stripe = useStripe();
@@ -72,6 +74,7 @@ const CheckOutForm = ({ onClose, data }) => {
         });
         onClose();
         const paymentInfo = {
+          name: dUser?.name,
           email: user?.email,
           price: data,
           transactionId: paymentIntent.id,

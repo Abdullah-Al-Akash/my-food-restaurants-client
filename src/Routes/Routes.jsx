@@ -14,6 +14,7 @@ import ManageItems from "../pages/Dashboard/ManageItems/ManageItems";
 import PaymentHistory from "../pages/Dashboard/PaymentHistory/PaymentHistory";
 import AdminHome from "../pages/Dashboard/AdminHome/AdminHome";
 import UserHome from "../pages/Dashboard/UserHome/UserHome";
+import ManageOrder from "../pages/Dashboard/ManageOrders/ManageOrder";
 
 export const router = createBrowserRouter([
   {
@@ -66,6 +67,14 @@ export const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AllUsers></AllUsers>
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-orders",
+        element: (
+          <AdminRoute>
+            <ManageOrder></ManageOrder>
           </AdminRoute>
         ),
       },
