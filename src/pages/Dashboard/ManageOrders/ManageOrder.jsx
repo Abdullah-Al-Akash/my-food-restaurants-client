@@ -31,8 +31,8 @@ const ManageOrder = () => {
         subHeading={"---Check Order---"}
       ></SectionTitle>
 
-      <div className="overflow-x-auto pb-8">
-        <table className="table w-full">
+      <div className="overflow-x-auto w-full pb-8">
+        <table className="table w-full text-sm">
           <thead className="">
             <tr>
               <th>SL</th>

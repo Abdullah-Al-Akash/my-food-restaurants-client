@@ -7,6 +7,9 @@ import useUser from "../../../hooks/useUser";
 import logo from "/logo.png";
 import html2canvas from "html2canvas";
 import html2pdf from "html2pdf.js";
+import processing from "../../../assets/gify/processing.gif";
+import deliver from "../../../assets/gify/delivery-service.gif";
+import cooking from "../../../assets/gify/chef.gif";
 
 const PaymentHistory = () => {
   const { dUser } = useUser();
@@ -29,7 +32,7 @@ const PaymentHistory = () => {
   // Invoice Part:
   const captureRef = useRef();
 
-   const handleDownloadImage = async () => {
+  const handleDownloadImage = async () => {
     const element = captureRef.current;
     if (!element) return;
 
@@ -108,12 +111,14 @@ const PaymentHistory = () => {
                     <td>
                       <span
                         className={`${
-                          payment.status === "cooking"
-                            ? "bg-red-100 text-red-600 font-semibold px-2 py-1 rounded-full"
-                            : "bg-green-100 text-green-600 font-semibold px-2 py-1 rounded-full"
-                        }`}
+                          payment?.status === "cooking"
+                            ? "text-purple-500 bg-purple-100"
+                            : payment?.status === "processing"
+                            ? "text-orange-400 bg-orange-100 "
+                            : "text-green-500 bg-green-100 "
+                        } font-semibold px-2 py-1 rounded-2xl flex items-center justify-center`}
                       >
-                        {payment.status}
+                        {payment.status} <img className="w-[30px] ms-2 rounded-lg" src={`${payment.status === "delivered"? deliver : payment.status === "processing"? processing : cooking}`} alt="" />
                       </span>
                     </td>
                     <td>
@@ -140,7 +145,7 @@ const PaymentHistory = () => {
             </button>
           </form>
           {/* ---------------Downloaded Part-------------- */}
-          <div ref={captureRef}  className="overflow-x-auto px-4 py-4">
+          <div ref={captureRef} className="overflow-x-auto px-4 py-4">
             <img
               className="bg-black rounded-md w-[120px] mx-auto my-4"
               src={logo}
@@ -231,9 +236,7 @@ const PaymentHistory = () => {
             <div className="flex justify-end mt-8">
               <div>
                 <h3 className="font-semibold text-center">Abdullah Al Akash</h3>
-                <span className="font-bold">
-                  ----Received By----
-                </span>
+                <span className="font-bold">----Received By----</span>
               </div>
             </div>
           </div>
@@ -244,11 +247,11 @@ const PaymentHistory = () => {
             Download as Image
           </button>
           <button
-        onClick={handleDownload}
-        className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-      >
-        Download PDF
-      </button>
+            onClick={handleDownload}
+            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
+          >
+            Download PDF
+          </button>
         </div>
       </dialog>
     </div>
