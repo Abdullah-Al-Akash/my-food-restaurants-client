@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -7,21 +6,26 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Pagination, Navigation } from "swiper/modules";
-import qouteIcon from "../../../assets/icon/quotation-mark.png";
 import "@smastrom/react-rating/style.css";
 import { Rating } from "@smastrom/react-rating";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "../../../hooks/useAxiosPublic";
 
 const Testimonials = () => {
-    const [reviews, setReviews] = useState([]);
-  useEffect(() => {
-    fetch("./reviews.json")
-      .then((res) => res.json())
-      .then((data) => {
-        setReviews(data);
-      });
-  }, []);
-    return (
-        <div className="py-8">
+  const axiosPublic = useAxiosPublic();
+  const {
+    data: reviews = [],
+    // isLoading,
+    // refetch,
+  } = useQuery({
+    queryKey: ["review"],
+    queryFn: async () => {
+      const res = await axiosPublic.get("/review");
+      return res.data; // ✅ return fetched data directly
+    },
+  });
+  return (
+    <div className="py-8">
       <SectionTitle
         subHeading={"---What Our Clients Say---"}
         heading={"TESTIMONIALS"}
@@ -47,7 +51,11 @@ const Testimonials = () => {
                   />
                 </div>
                 <div>
-                    <img className="mx-auto w-6/12 md:w-1/6 p-8" src={qouteIcon} alt="" />
+                  <img
+                    className="mx-auto w-6/12 md:w-1/6 p-8 rounded-full"
+                    src={r?.photo}
+                    alt=""
+                  />
                   <p className="text-xl my-4 leading-8 w-3/4 mx-auto">
                     {r.details}
                   </p>
@@ -61,7 +69,7 @@ const Testimonials = () => {
         </Swiper>
       </div>
     </div>
-    );
+  );
 };
 
 export default Testimonials;

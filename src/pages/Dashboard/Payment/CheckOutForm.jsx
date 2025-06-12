@@ -5,6 +5,7 @@ import useAuth from "../../../hooks/useAuth";
 import Swal from "sweetalert2";
 import useCarts from "../../../hooks/useCarts";
 import useUser from "../../../hooks/useUser";
+import { useNavigate } from "react-router-dom";
 
 const CheckOutForm = ({ onClose, data }) => {
   const { dUser } = useUser();
@@ -15,6 +16,7 @@ const CheckOutForm = ({ onClose, data }) => {
   const axiosSecure = useAxiosSecure();
   const [clientSecret, setClientSecret] = useState("");
   const [transactionId, setTransactionId] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data > 0) {
@@ -84,7 +86,10 @@ const CheckOutForm = ({ onClose, data }) => {
           status: "cooking",
         };
 
-        await axiosSecure.post("/payment-done", paymentInfo);
+        const res = await axiosSecure.post("/payment-done", paymentInfo);
+        if (res?.data?.insertedId) {
+          navigate("/dashboard/payment-history");
+        }
         refetch();
       }
     }

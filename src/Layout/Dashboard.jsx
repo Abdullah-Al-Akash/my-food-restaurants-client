@@ -41,7 +41,7 @@ const Dashboard = () => {
                 </NavLink>
               </li>
               <li onClick={handleClose}>
-                <NavLink to="/dashboard/add-items" className={activeClass}>
+                <NavLink to="/dashboard/add-item" className={activeClass}>
                   <FaUtensils></FaUtensils>
                   <span>Add Items</span>
                 </NavLink>

@@ -23,7 +23,7 @@ const UserHome = () => {
       body: formData,
     });
     const data = await res.json();
-    if (data.success) return data.data.url;
+    if (data.success) return data?.data?.url;
     else throw new Error("Image upload failed");
   }
 
@@ -46,7 +46,6 @@ const UserHome = () => {
             const res = await axiosSecure.patch(`/user/${dUser?._id}`, {
               photo: url,
             });
-            console.log(res);
 
             refetch();
             Swal.fire({
