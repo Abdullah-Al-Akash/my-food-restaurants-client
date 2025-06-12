@@ -4,7 +4,7 @@ import "./Featured.css";
 
 const Featured = () => {
   return (
-    <div>
+    <div data-aos="flip-left">
       <div className="py-8 my-8 featured-bg bg-fixed text-white mb-16">
         <SectionTitle
           subHeading={"---Check it out---"}

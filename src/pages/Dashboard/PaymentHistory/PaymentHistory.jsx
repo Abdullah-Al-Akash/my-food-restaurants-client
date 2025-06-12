@@ -78,26 +78,26 @@ const PaymentHistory = () => {
   };
 
   // Invoice Part:
-  const captureRef = useRef();
+  // const captureRef = useRef();
 
-  const handleDownloadImage = async () => {
-    const element = captureRef.current;
-    if (!element) return;
+  // const handleDownloadImage = async () => {
+  //   const element = captureRef.current;
+  //   if (!element) return;
 
-    const canvas = await html2canvas(element, {
-      useCORS: true,
-      scale: 2, // Better resolution
-    });
+  //   const canvas = await html2canvas(element, {
+  //     useCORS: true,
+  //     scale: 2, // Better resolution
+  //   });
 
-    const image = canvas.toDataURL("image/png");
+  //   const image = canvas.toDataURL("image/png");
 
-    const link = document.createElement("a");
-    link.href = image;
-    link.download = "captured-image.png"; // ফাইলের নাম
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link); // Clean-up
-  };
+  //   const link = document.createElement("a");
+  //   link.href = image;
+  //   link.download = "captured-image.png"; // ফাইলের নাম
+  //   document.body.appendChild(link);
+  //   link.click();
+  //   document.body.removeChild(link); // Clean-up
+  // };
 
   // Invoice Part Html to PDF:
   const contentRef = useRef();
@@ -106,9 +106,12 @@ const PaymentHistory = () => {
     const element = contentRef.current;
     const options = {
       margin: 0.5,
-      filename: "payment-receipt.pdf",
+      filename: "my-food-receipt.pdf",
       image: { type: "jpeg", quality: 0.98 },
-      html2canvas: { scale: 2 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true, // ✅ This is the magic
+      },
       jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
     };
     html2pdf().set(options).from(element).save();
@@ -223,7 +226,7 @@ const PaymentHistory = () => {
             </button>
           </form>
           {/* ---------------Downloaded Part-------------- */}
-          <div ref={captureRef} className="overflow-x-auto px-4 py-4">
+          <div ref={contentRef} className="overflow-x-auto px-4 py-4">
             <img
               className="bg-black rounded-md w-[120px] mx-auto my-4"
               src={logo}
@@ -318,18 +321,14 @@ const PaymentHistory = () => {
               </div>
             </div>
           </div>
-          <button
-            onClick={handleDownloadImage}
-            className="mt-4 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-          >
-            Download as Image
-          </button>
-          <button
-            onClick={handleDownload}
-            className="mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
-          >
-            Download PDF
-          </button>
+          <div className="flex justify-end">
+            <button
+              onClick={handleDownload}
+              className="mt-4 font-semibold bg-orange-400 hover:bg-orange-500 text-white py-2 px-4 rounded"
+            >
+              Download Invoice
+            </button>
+          </div>
         </div>
       </dialog>
 

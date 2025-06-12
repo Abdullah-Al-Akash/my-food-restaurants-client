@@ -68,7 +68,7 @@ const UserHome = () => {
   };
 
   return (
-    <div>
+    <div className="">
       <div>
         <h3 className="py-4 text-2xl md:text-5xl text-center font-bold ">
           Welcome Back <br />
@@ -127,7 +127,7 @@ const UserHome = () => {
               className="hidden"
             />
           </div>
-          <div className="py-8 bg-yellow-50 w-96 px-8 my-8 border-2 border-orange-400 border-dashed rounded-md">
+          <div className="py-8 bg-yellow-50 px-8 my-8 border-2 border-orange-400 border-dashed rounded-md">
             <h3 className="text-center font-bold text-3xl pb-4">About</h3>
             <div className="">
               <h3 className="font-semibold text-gray-400 text-lg border-b-2 py-1">User Name </h3>

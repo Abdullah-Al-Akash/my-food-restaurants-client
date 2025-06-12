@@ -8,12 +8,19 @@ import useAdmin from "../../../hooks/useAdmin";
 import logo from "../../../assets/logo.png";
 import useUser from "../../../hooks/useUser";
 
+import { FaBars, FaTimes } from "react-icons/fa";
+
 const Navbar = () => {
   const location = useLocation();
   const { user, logOut, loading } = useContext(AuthContext);
   const [isAdmin] = useAdmin(user?.email);
   const [cart] = useCarts();
   const { dUser } = useUser();
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const toggleDrawer = () => setDrawerOpen(!drawerOpen);
+  const closeDrawer = () => setDrawerOpen(false);
+
   // For User Menu
   // ----------------------------------------------------
   const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +50,7 @@ const Navbar = () => {
     <>
       <li>
         <Link
+          onClick={closeDrawer}
           to="/"
           className={`text-xl text-white hover:text-yellow-400 ${
             location.pathname === "/" ? "text-yellow-400" : ""
@@ -53,6 +61,7 @@ const Navbar = () => {
       </li>
       <li>
         <Link
+          onClick={closeDrawer}
           to="/menu"
           className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
             location.pathname === "/menu" ? "text-yellow-400" : ""
@@ -61,25 +70,13 @@ const Navbar = () => {
           Menu
         </Link>
       </li>
-
-      {/* <li>
-        <Link
-          to={`${
-            user && isAdmin ? "/dashboard/admin-home" : "/dashboard/user-home"
-          }`}
-          className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
-            location.pathname === "/dashboard" ? "text-yellow-400" : ""
-          } focus:!bg-transparent hover:!bg-transparent`}
-        >
-          Dashboard
-        </Link>
-      </li> */}
       {dUser?.role === "admin" ? (
         ""
       ) : (
         <>
           <li>
             <Link
+              onClick={closeDrawer}
               to="/order/salads"
               className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
                 location.pathname === "/order/salads" ? "text-yellow-400" : ""
@@ -90,6 +87,7 @@ const Navbar = () => {
           </li>
           <li>
             <Link
+              onClick={closeDrawer}
               to="/dashboard/cart"
               className={`text-xl text-white hover:text-yellow-400 active:text-yellow-400 ${
                 location.pathname === "/dashoard/cart" ? "text-yellow-400" : ""
@@ -110,28 +108,34 @@ const Navbar = () => {
       <div className="navbar fixed z-10 bg-opacity-30 bg-black max-w-screen-xl font-bold">
         <div className="navbar-start">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
+            <div className="relative md:hidden">
+              {/* Hamburger */}
+              <button
+                onClick={toggleDrawer}
+                className="lg:hidden p-3 text-xl text-orange-400 focus:outline-none z-50"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </label>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 rounded-box w-52"
-            >
-              {navOptions}
-            </ul>
+                {drawerOpen ? <FaTimes /> : <FaBars />}
+              </button>
+
+              {/* Drawer Overlay */}
+              {drawerOpen && (
+                <div
+                  onClick={closeDrawer}
+                  className="fixed inset-0 bg-black bg-opacity-40 z-40"
+                ></div>
+              )}
+
+              {/* Drawer */}
+              <div
+                className={`fixed top-0 left-0 w-64 h-full bg-black bg-opacity-70 shadow-md z-50 transform transition-transform duration-300 ease-in-out ${
+                  drawerOpen ? "translate-x-0" : "-translate-x-full"
+                } lg:translate-x-0 lg:static lg:shadow-none lg:bg-transparent lg:w-auto lg:h-auto`}
+              >
+                <ul className="menu p-4 space-y-2 text-lg font-medium lg:flex lg:space-y-0 lg:space-x-6 lg:p-0">
+                  {navOptions}
+                </ul>
+              </div>
+            </div>
           </div>
           <Link to="/" className="">
             <img className="w-[200px]" src={logo} alt="" />
@@ -199,8 +203,8 @@ const Navbar = () => {
                     </li>
                     {dUser?.role === "admin" ? (
                       ""
-                      //Here Need to add admin Menu  Task1
                     ) : (
+                      //Here Need to add admin Menu  Task1
                       <>
                         <li>
                           <Link
