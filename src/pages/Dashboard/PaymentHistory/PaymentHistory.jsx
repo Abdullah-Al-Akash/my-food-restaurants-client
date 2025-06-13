@@ -2,10 +2,9 @@ import React, { useRef, useState } from "react";
 import usePaymentDetails from "../../../hooks/usePaymentDetails";
 import SectionTitle from "../../../components/SectionTitle/SectionTitle";
 import useAxiosSecure from "../../../hooks/useAxiosSecure";
-import { FaDownload, FaRegStar, FaStar } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
 import useUser from "../../../hooks/useUser";
 import logo from "/logo.png";
-import html2canvas from "html2canvas";
 import html2pdf from "html2pdf.js";
 import processing from "../../../assets/gify/processing.gif";
 import deliver from "../../../assets/gify/delivery-service.gif";
@@ -17,7 +16,7 @@ import Swal from "sweetalert2";
 const PaymentHistory = () => {
   const { dUser } = useUser();
   const [rating, setRating] = useState(5);
-  const [paymentDetails] = usePaymentDetails();
+  const [paymentDetails, refetch] = usePaymentDetails();
   const [foods, setFoods] = useState([]);
   const [orderDetail, setOrderDetail] = useState({});
   const [reviewDetails, setReviewDetails] = useState({});
@@ -26,7 +25,6 @@ const PaymentHistory = () => {
     console.log(detail);
     setOrderDetail(detail);
     // Have to open modal:
-    console.log(id);
     await axiosSecure(`/food-details/${id}`).then((res) => {
       console.log(res?.data);
       setFoods(res?.data);
@@ -64,6 +62,7 @@ const PaymentHistory = () => {
             showConfirmButton: false,
             timer: 3000,
           });
+          refetch();
         } else {
           Swal.fire({
             position: "top-center",
