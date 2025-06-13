@@ -1,35 +1,48 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import useAuth from "./useAuth";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://my-food-server-wheat.vercel.app",
+  // baseURL: "http://localhost:5000",
 });
 
 const useAxiosSecure = () => {
   const navigate = useNavigate();
-  const{logOut} = useAuth();
-  axiosSecure.interceptors.request.use(
-    function (config) {
-      const token = localStorage.getItem("access-token");
-      config.headers.authorization =  `Bearer ${token}`;
-      return config;
-    },
-    function (err) {
-      return Promise.reject(err);
-    }
-  );
+  const { logOut } = useAuth();
 
-  axiosSecure.interceptors.response.use(function(response){
-    return response;
-  }, async function asy(err){
-    const status = err.response.status;
-    if(status === 401 || status === 403){
-      await logOut();
-      navigate('/login')
-    }
-    return Promise.reject(err);
-  })
+  useEffect(() => {
+    const requestInterceptor = axiosSecure.interceptors.request.use(
+      (config) => {
+        const token = localStorage.getItem("access-token");
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (err) => Promise.reject(err)
+    );
+
+    const responseInterceptor = axiosSecure.interceptors.response.use(
+      (response) => response,
+      async (err) => {
+        const status = err.response?.status;
+        if (status === 401 || status === 403) {
+          await logOut();
+          navigate("/login");
+        }
+        return Promise.reject(err);
+      }
+    );
+
+    // Cleanup on unmount to avoid duplicates
+    return () => {
+      axiosSecure.interceptors.request.eject(requestInterceptor);
+      axiosSecure.interceptors.response.eject(responseInterceptor);
+    };
+  }, [logOut, navigate]);
+
   return axiosSecure;
 };
 

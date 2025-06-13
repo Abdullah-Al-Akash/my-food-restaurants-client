@@ -26,6 +26,9 @@ const MenuCategory = ({
           subHeading={sectionSubHeading}
         ></SectionTitle>
         }
+        {
+          !items?.length ? <div className="flex justify-center items-center min-h-screen"> <span className="loading loading-spinner text-error text-[100px]"></span> </div> : ""
+        }
         <div className={`grid md:grid-cols-2 gap-8 px-4 ${coverImg?"pt-16" :""}`}>
           {items.map((item) => (
             <MenuCard key={item._id} item={item}></MenuCard>

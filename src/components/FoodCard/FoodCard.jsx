@@ -51,7 +51,12 @@ const FoodCard = ({ item }) => {
     }
   };
   return (
-    <div className="bg-[#f3f3f3] shadow-xl text-center relative">
+    <div
+      data-aos="flip-left"
+      data-aos-easing="ease-out-cubic"
+      data-aos-duration="1000"
+      className="bg-[#f3f3f3] shadow-xl text-center relative"
+    >
       <figure>
         <img className="w-full h-[280px] rounded-sm" src={image} alt={name} />
       </figure>
